@@ -1,6 +1,6 @@
 
 from socket import socket
-from verify import Verify
+from verify.verify import Verify
 from commands import *
 
 from constants import *

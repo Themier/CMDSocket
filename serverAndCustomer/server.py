@@ -1,6 +1,6 @@
 import socket, sys, os, requests
-from serverBooter import ServerBooter
-from serverTutelage import ServerTutelage
+from .serverBooter import ServerBooter
+from .serverTutelage import ServerTutelage
 
 # constants
 from constants import *
