@@ -1,12 +1,15 @@
+
 import socket, sys, os, requests
-from .serverBooter import ServerBooter
-from .serverTutelage import ServerTutelage
+from serverAndCustomer.serverBooter import ServerBooter
+from serverAndCustomer.serverTutelage import ServerTutelage
+from commands.uploadFile import makePath
 
 # constants
-from constants import *
+import constants
 
 # home
-homePath = os.path.abspath(homePath)
+homePath = os.path.abspath(constants.homePath)
+makePath(homePath)
 os.chdir(homePath)
 #os.system('explorer.exe {}'.format(homePath))
 
@@ -21,17 +24,17 @@ print(courtesyStr)
 print('服务器主机名: {}'.format(hostname))
 #print('服务器主机 ip: {}'.format(hostIP))
 print('服务器主机 ip: {}'.format(hostip))
-print('端口范围: {} - {}'.format(minPort, maxPort))
+print('端口范围: {} - {}'.format(constants.minPort, constants.maxPort))
 
 #boot
 serverBooter = ServerBooter()
 tryBindIps = [hostip]
-if serverBooter.TryBoot(tryBindIps, range(minPort, maxPort)):
+if serverBooter.TryBoot(tryBindIps, range(constants.minPort, constants.maxPort)):
     print('\n服务器启动 {}:{}\n'.format(serverBooter.ip, serverBooter.port))
 else:
     print('\n服务器启动失败，可能是没有可用的端口或 ip\n')
     sys.exit(1)
-serverBooter.Listen(maxConnection)
+serverBooter.Listen(constants.maxConnection)
 server = serverBooter.server
 print('最大连接数 {}\n\n'.format(serverBooter.nlisten))
 

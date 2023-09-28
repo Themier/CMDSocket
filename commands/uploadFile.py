@@ -1,6 +1,6 @@
 
 import os
-from constants import *
+import constants
 from commands import CommandBase
 
 uploadFile_id = 'uploadFile'
@@ -21,7 +21,7 @@ def makePath(path:str):
 
 
 def pathInHome(path:str):
-    absHome = os.path.abspath(homePath)
+    absHome = os.path.abspath(constants.homePath)
     absPath = os.path.abspath(path)
     n = len(absHome)
     return absPath[:n] == absHome[:n]

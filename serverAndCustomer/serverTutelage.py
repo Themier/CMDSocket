@@ -3,7 +3,7 @@ from socket import socket
 from verify.verify import Verify
 from commands import *
 
-from constants import *
+import constants
 
 class ServerTutelage():
     '''
@@ -45,19 +45,28 @@ class ServerTutelage():
         '''
         '''
         while True:
-            try:
-                print('\n监听中 ...\n')
+            print('\n监听中 ...\n')
 
-                link, customAddr = self.server.accept()
-                print('来自 {} 的访问, 等待指令...'.format(customAddr))
-                cmd = link.recv(cmdMaxSize).decode('utf-8')
-                print('收到指令, 长度 {}'.format(len(cmd)))
+            link, customAddr = self.server.accept()
+            print('来自 {} 的访问, 等待指令...'.format(customAddr))
+            cmd = link.recv(constants.cmdMaxSize).decode('utf-8')
+            print('收到指令, 长度 {}'.format(len(cmd)))
     
-                cmd = eval(cmd)
-                self.__GetCMD(cmd, customAddr, link)
-            except:
-                print('发生错误')
-                link.send('发生错误'.encode('utf-8'))
+            cmd = eval(cmd)
+            self.__GetCMD(cmd, customAddr, link)
+            #try:
+            #    print('\n监听中 ...\n')
+
+            #    link, customAddr = self.server.accept()
+            #    print('来自 {} 的访问, 等待指令...'.format(customAddr))
+            #    cmd = link.recv(cmdMaxSize).decode('utf-8')
+            #    print('收到指令, 长度 {}'.format(len(cmd)))
+    
+            #    cmd = eval(cmd)
+            #    self.__GetCMD(cmd, customAddr, link)
+            #except:
+            #    print('发生错误')
+            #    link.send('发生错误'.encode('utf-8'))
 
             link.send('cmd_finish'.encode('utf-8'))
             link.close()

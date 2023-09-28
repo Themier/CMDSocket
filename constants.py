@@ -1,7 +1,5 @@
 
 # hand input
-homePath = r'n:/fileServer/'
-
 minPort = 8000
 maxPort = 60000
 
@@ -20,6 +18,7 @@ cmd_finish_words = 'cmd_finish'
 # auto generate
 import os
 prjPath = os.path.abspath(os.path.join(__file__, os.pardir))
+homePath = os.path.abspath(os.path.join(prjPath, os.pardir, 'fileServer'))
 
 homePath = os.path.abspath(homePath)
 caseFolder = os.path.abspath(os.path.join(homePath, caseFolder))
