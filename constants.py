@@ -1,5 +1,7 @@
 
+##
 # hand input
+##
 minPort = 8000
 maxPort = 60000
 
@@ -14,8 +16,14 @@ caseResultPathName = 'results'
 caseDescFileName = 'desc.txt'
 
 cmd_finish_words = 'cmd_finish'
+##
+# hand input over
+##
 
+
+##
 # auto generate
+##
 import os
 prjPath = os.path.abspath(os.path.join(__file__, os.pardir))
 homePath = os.path.abspath(os.path.join(prjPath, os.pardir, 'fileServer'))
@@ -26,5 +34,8 @@ caseInputFileName = os.path.abspath(os.path.join(homePath, caseInputFileName))
 caseProgrameName = os.path.abspath(os.path.join(homePath, caseProgrameName))
 caseResultPathName = os.path.abspath(os.path.join(homePath, caseResultPathName))
 caseDescFileName = os.path.abspath(os.path.join(homePath, caseDescFileName))
+##
+# auto generate over
+##
 
 
