@@ -1,7 +1,7 @@
 
 from socket import socket
 from verify import Verify
-from commands import CommandBase
+from commands import *
 
 from constants import *
 
@@ -19,7 +19,7 @@ class ServerTutelage():
     def __ParseCMD(self, cmd, customAddr, link):
         '''
         '''
-        cmdId = cmd.get('cmd')
+        cmdId = cmd.get('cmdId')
         print('指令 : {}'.format(cmdId))
         if cmdId in CommandBase.inses:
             CommandBase.inses[cmdId].Action(cmd, customAddr, link)
@@ -45,14 +45,14 @@ class ServerTutelage():
         '''
         '''
         while True:
-            print('\n监听中 ...\n')
-
-            link, customAddr = self.server.accept()
-            print('来自 {} 的访问, 等待指令...'.format(customAddr))
-            cmd = link.recv(cmdMaxSize).decode('utf-8')
-            print('收到指令, 长度 {}'.format(len(cmd)))
-    
             try:
+                print('\n监听中 ...\n')
+
+                link, customAddr = self.server.accept()
+                print('来自 {} 的访问, 等待指令...'.format(customAddr))
+                cmd = link.recv(cmdMaxSize).decode('utf-8')
+                print('收到指令, 长度 {}'.format(len(cmd)))
+    
                 cmd = eval(cmd)
                 self.__GetCMD(cmd, customAddr, link)
             except:

@@ -2,7 +2,7 @@
 import os
 from constants import *
 from commands import CommandBase
-from commands.newFile import newFile, makePath, pathInHome
+from commands.uploadFile import uploadFile, makePath, pathInHome
 
 def newCase(cmd, customAddr, link):
     '''
@@ -76,4 +76,4 @@ def newCase(cmd, customAddr, link):
     return
 
 
-CommandBase('newCase', newCase)
+CommandBase('newCase', newCase, None)
