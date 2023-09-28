@@ -49,24 +49,27 @@ class ServerTutelage():
 
             link, customAddr = self.server.accept()
             print('来自 {} 的访问, 等待指令...'.format(customAddr))
-            cmd = link.recv(constants.cmdMaxSize).decode('utf-8')
-            print('收到指令, 长度 {}'.format(len(cmd)))
-    
-            cmd = eval(cmd)
-            self.__GetCMD(cmd, customAddr, link)
-            #try:
-            #    print('\n监听中 ...\n')
 
-            #    link, customAddr = self.server.accept()
-            #    print('来自 {} 的访问, 等待指令...'.format(customAddr))
-            #    cmd = link.recv(cmdMaxSize).decode('utf-8')
-            #    print('收到指令, 长度 {}'.format(len(cmd)))
-    
-            #    cmd = eval(cmd)
-            #    self.__GetCMD(cmd, customAddr, link)
-            #except:
-            #    print('发生错误')
-            #    link.send('发生错误'.encode('utf-8'))
+            cmdList = link.recv(constants.cmdMaxSize).decode('utf-8')
+            bracePosition = cmdList.find('[')
+            dotPosition = cmdList.find(',')
+            while bracePosition  < 0 or dotPosition < 0:
+                cmdList += link.recv(constants.cmdMaxSize).decode('utf-8')
+                bracePosition = cmdList.find('[')
+                dotPosition = cmdList.find(',')
+            cmdSize = cmdList[bracePosition+1: dotPosition]
+            cmdSize = int(cmdSize)
+
+            while len(cmdList) < cmdSize:
+                cmdList += link.recv(constants.cmdMaxSize).decode('utf-8')
+            if len(cmdList) > cmdSize:
+                cmdList = cmdList[:cmdSize]
+
+            print('收到指令, 长度 {}'.format(len(cmdList)))
+            cmdList = eval(cmdList)
+
+            cmd = cmdList[1]
+            self.__GetCMD(cmd, customAddr, link)
 
             link.send('cmd_finish'.encode('utf-8'))
             link.close()

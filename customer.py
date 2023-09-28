@@ -19,9 +19,12 @@ while True:
         if not cmd == None:
             customer.connect(('192.168.41.85', 8000))
             cmd.update(userImformation)
-            cmd = repr(cmd)
-            print(f'指令长度 {len(cmd)}')
-            customer.send(cmd.encode('utf-8'))
+            cmdList = [0, cmd]
+            while cmdList[0] != len(repr(cmdList)):
+                cmdList[0] = len(repr(cmdList))
+            print(f'指令长度 {cmdList[0]}')
+            cmdList = repr(cmdList)
+            customer.send(cmdList.encode('utf-8'))
             while True:
                 reply = customer.recv(constants.cmdMaxSize).decode('utf-8')
                 print(reply)

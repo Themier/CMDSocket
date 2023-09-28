@@ -61,7 +61,7 @@ def genUploadProject(d:dict={})->dict:
     '''
     cmd = {'cmdId':uploadPrj_id}
     prjMap = {}
-    __getFolderItems(prjMap, prjPath)
+    __getFolderItems(prjMap, constants.prjPath)
     cmd['prjMap'] = prjMap
 
     return cmd
