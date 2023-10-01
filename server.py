@@ -17,12 +17,12 @@ os.chdir(homePath)
 courtesyStr = '\n你好 ^-^， 愿一切向好。\n启动中 ... \n'
 hostname = socket.gethostname()
 hostip = socket.gethostbyname(hostname)
-#hostIP = requests.get('http://httpbin.org/ip').json()['origin']
+hostIP = requests.get('http://httpbin.org/ip').json()['origin']
 
 #courtesy   
 print(courtesyStr)
 print('服务器主机名: {}'.format(hostname))
-#print('服务器主机 ip: {}'.format(hostIP))
+print('服务器主机 ip: {}'.format(hostIP))
 print('服务器主机 ip: {}'.format(hostip))
 print('端口范围: {} - {}'.format(constants.minPort, constants.maxPort))
 
