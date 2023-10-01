@@ -1,5 +1,6 @@
 
 import socket
+import constants
 
 class ServerBooter():
     '''
@@ -8,6 +9,7 @@ class ServerBooter():
     def __init__(self):
         self.switch = 'off'
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        constants.server = self.server
         self.ip=None
         self.port=None
         self.nlisten = None

@@ -9,7 +9,6 @@ userImformation = {
     ,'password':'tower^10'
     }
 
-customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 while True:
     inp = input('指令 Id：')
@@ -17,7 +16,8 @@ while True:
     if inp in CommandBase.inses:
         cmd = CommandBase.inses[inp].Gen()
         if not cmd == None:
-            customer.connect(('192.168.41.85', 8000))
+            customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            customer.connect(('192.168.41.67', 8000))
             cmd.update(userImformation)
             cmdList = [0, cmd]
             while cmdList[0] != len(repr(cmdList)):

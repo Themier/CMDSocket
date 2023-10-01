@@ -1,4 +1,3 @@
-s = '123'
+import os
 
-i = int(s)
-print(i)
+os.system('python server.py')

@@ -19,7 +19,7 @@ hostname = socket.gethostname()
 hostip = socket.gethostbyname(hostname)
 #hostIP = requests.get('http://httpbin.org/ip').json()['origin']
 
-#courtesy
+#courtesy   
 print(courtesyStr)
 print('服务器主机名: {}'.format(hostname))
 #print('服务器主机 ip: {}'.format(hostIP))
