@@ -17,7 +17,7 @@ while True:
         cmd = CommandBase.inses[inp].Gen()
         if not cmd == None:
             customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            customer.connect(('202.115.61.193', 8000))
+            customer.connect(('192.168.41.67', 8000))
             cmd.update(userImformation)
             cmdList = [0, cmd]
             while cmdList[0] != len(repr(cmdList)):

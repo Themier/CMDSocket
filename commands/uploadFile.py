@@ -38,7 +38,7 @@ def uploadFile(cmd, customAddr, link)->int:
     if fileSize != 0:
         completePercent = recvFileSize * 100.0 / fileSize
     else:
-        completePervent = 100.0
+        completePercent = 100.0
     complete = (fileSize == recvFileSize)
 
     if not pathInHome(os.path.join(fileFolder, fileName)):
