@@ -24,11 +24,9 @@ def newCase(cmd, customAddr, link):
     newFileCMD['fileContent'] = cmd.get('inputFileContent')
     uploadFile(newFileCMD, customAddr, link)
     
-    caseDesc = cmd.get('description', 'no description')
+    caseDesc = cmd.get('description', b'no description')
     if len(caseDesc) == 0:
-        caseDesc = 'no description' 
-    caseDesc = caseDesc if caseDesc!='' else 'no description'
-    caseDesc = caseDesc.encode('utf-8')
+        caseDesc = b'no description'
     newFileCMD['fileName'] = constants.caseDescFileName
     newFileCMD['fileSize'] = len(caseDesc)
     newFileCMD['fileContent'] = caseDesc
