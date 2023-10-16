@@ -40,8 +40,8 @@ def uploadFile(cmd, customAddr, link)->int:
     else:
         completePercent = 100.0
     complete = (fileSize == recvFileSize)
-
-    if not pathInHome(os.path.join(fileFolder, fileName)):
+    
+    if not (pathInHome(os.path.join(fileFolder, fileName)) and pathInHome(fileFolder)):
         reply='文件传输失败：指定的路径超出了服务器权限 {}'.format(os.path.join(fileFolder, fileName))
         print(reply)
         link.send(reply.encode('utf-8'))

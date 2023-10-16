@@ -9,7 +9,7 @@ maxConnection = 3
 cmdMaxSize = 10*1024*1024
 
 caseFolder = r'lbmCase'
-caseInputFileName = 'parames.dat'
+caseInputFileName = 'params.dat'
 caseProgrameName = 'program.exe'
 caseResultPathName = 'results'
 caseDescFileName = 'desc.txt'
@@ -27,10 +27,10 @@ homePath = os.path.abspath(os.path.join(prjPath, os.pardir, 'fileServer'))
 
 homePath = os.path.abspath(homePath)
 caseFolder = os.path.abspath(os.path.join(homePath, caseFolder))
-caseInputFileName = os.path.abspath(os.path.join(homePath, caseInputFileName))
-caseProgrameName = os.path.abspath(os.path.join(homePath, caseProgrameName))
-caseResultPathName = os.path.abspath(os.path.join(homePath, caseResultPathName))
-caseDescFileName = os.path.abspath(os.path.join(homePath, caseDescFileName))
+#caseInputFileName = os.path.abspath(os.path.join(homePath, caseInputFileName))
+#caseProgrameName = os.path.abspath(os.path.join(homePath, caseProgrameName))
+#caseResultPathName = os.path.abspath(os.path.join(homePath, caseResultPathName))
+#caseDescFileName = os.path.abspath(os.path.join(homePath, caseDescFileName))
 
 server = None
 

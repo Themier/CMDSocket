@@ -17,7 +17,11 @@ os.chdir(homePath)
 courtesyStr = '\n你好 ^-^， 愿一切向好。\n启动中 ... \n'
 hostname = socket.gethostname()
 hostip = socket.gethostbyname(hostname)
-hostIP = requests.get('http://httpbin.org/ip').json()['origin']
+hostIP = None
+try:
+    hostIP = requests.get('http://httpbin.org/ip').json()['origin']
+except Exception as result:
+    print('获取公网 IP 失败，被接口拒绝。可能是因为代理？')
 
 #courtesy   
 print(courtesyStr)

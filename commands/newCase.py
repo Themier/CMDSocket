@@ -3,6 +3,7 @@ import os
 import constants
 from commands import CommandBase
 from commands.uploadFile import uploadFile, makePath, pathInHome
+from tools import ChoiceBox
 
 newCase_id = 'newCase'
 
@@ -24,7 +25,10 @@ def newCase(cmd, customAddr, link):
     uploadFile(newFileCMD, customAddr, link)
     
     caseDesc = cmd.get('description', 'no description')
+    if len(caseDesc) == 0:
+        caseDesc = 'no description' 
     caseDesc = caseDesc if caseDesc!='' else 'no description'
+    caseDesc = caseDesc.encode('utf-8')
     newFileCMD['fileName'] = constants.caseDescFileName
     newFileCMD['fileSize'] = len(caseDesc)
     newFileCMD['fileContent'] = caseDesc
@@ -50,11 +54,15 @@ def genNewCase(d:dict={}):
     cmd['programContent'] = d.get('programContent', '')
     cmd['description'] = d.get('description', '')
     while True:
-        inp = input('\n[i]caseId {}\n[if]inputFileSize {}\n[p]programSize {}\n[d]description {}\n[cf] confirm\n'.format(
-            cmd['caseId'], len(cmd['inputFileContent']), len(cmd['programContent']), cmd['description']))
-        if inp == 'i':
+        cb = ChoiceBox()
+        cb.newChoice('caseId', cmd['caseId'])
+        cb.newChoice('inputFile', len(cmd['inputFileContent']))
+        cb.newChoice('program', len(cmd['programContent']))
+        cb.newChoice('description', cmd['description'])
+        inp = cb.getChoice()
+        if inp == 'caseId':
             cmd['caseId'] = input('new id')
-        elif inp == 'if':
+        elif inp == 'inputFile':
             import win32ui
             dlg = win32ui.CreateFileDialog(2)
             #dlg.SetOFNInitialDir('c:/')
@@ -64,7 +72,7 @@ def genNewCase(d:dict={}):
             file = open(filePath, 'rb')
             fileContent = file.read()
             cmd['inputFileContent'] = fileContent
-        elif inp == 'p':
+        elif inp == 'program':
             import win32ui
             dlg = win32ui.CreateFileDialog(2)
             #dlg.SetOFNInitialDir('c:/')
@@ -74,9 +82,9 @@ def genNewCase(d:dict={}):
             file = open(filePath, 'rb')
             fileContent = file.read()
             cmd['programContent'] = fileContent
-        elif inp == 'd':
+        elif inp == 'description':
             cmd['description'] = input('new description')
-        elif inp =='confirm':
+        elif inp == ChoiceBox.confirmId:
             cmd['programSize'] = len(cmd['programContent'])
             cmd['inputFileSize'] = len(cmd['inputFileContent'])
             cmd['description'] = cmd['description'].encode('utf-8')

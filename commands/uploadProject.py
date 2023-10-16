@@ -8,7 +8,7 @@ import time
 import shutil
 
 uploadPrj_id = 'uploadProject'
-uploadPrj_ignores = ['^[.]vs$', '^__pycache__$', '^.git$', '.*[.]cfg$', '^constants.py$']
+uploadPrj_ignores = ['^[.]vs$', '^__pycache__$', '^.git$', '.*[.]cfg$']
 
 def uploadProject(cmd, customAddr, link)->int:
     '''
