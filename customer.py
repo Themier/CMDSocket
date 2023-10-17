@@ -37,6 +37,8 @@ while True:
                     if reply[-(len(constants.cmd_finish_words)):] == constants.cmd_finish_words:
                         customer.close()
                         break
+            else:
+                print('指令生成失败')
         else:
             print('可用的指令：{}'.format(CommandBase.inses.keys()))
 

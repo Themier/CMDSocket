@@ -1,3 +1,4 @@
-import os
 
-os.system('python server.py')
+import win32ui
+
+print(win32ui.__file__)
