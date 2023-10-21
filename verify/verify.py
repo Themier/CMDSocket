@@ -1,18 +1,7 @@
 
 import os
-
-class UserImformation(dict):
-    '''
-    '''
-
-    def __init__(self, initValues:dict):
-        super().__init__()
-        self.update({
-            'username':None
-            ,'password':None
-            })
-        self.update(initValues)
-        return
+import constants
+from verify import UserImformation
 
 
 
@@ -25,18 +14,21 @@ class Verify():
 
     def __init__(self):
         if Verify.athor == None:
-            configPath = 'configs'
+            Verify.athor = {}
+            configPath = constants.configFolder
             if not os.path.exists(configPath):
                 os.mkdir(configPath)
 
-            filePath = os.path.join(configPath, 'athor.cfg')
+            filePath = os.path.join(configPath, constants.athorFileName + constants.configFileSuffix)
             if not os.path.isfile(filePath):
                 userImformation = UserImformation({'username':'tower','password':'tower^10'})
-                Verify.athor = {userImformation['username'] : userImformation}
+                Verify.athor.update({userImformation['username'] : userImformation})
                 Verify.UpdateArchive()
             else:
                 file = open(filePath, 'r')
-                Verify.athor = eval(file.read())
+                dict = eval(file.read())
+                for username in dict:
+                    Verify.athor[username] = UserImformation(dict[username])
                 file.close()
 
         return
@@ -46,8 +38,9 @@ class Verify():
     def Verify(self, username:str, password:str):
         '''
         '''
-        if username in self.athor and password == self.athor[username]['password']:
-            return True
+        if username in self.athor:
+            if self.athor[username].Verify(password):
+                return True
 
         return False
 
@@ -66,14 +59,18 @@ class Verify():
     def UpdateArchive(self):
         '''
         '''
-        configPath = 'configs'
-        filePath = os.path.join(configPath, 'athor.cfg')
+        configPath = constants.configFolder
+        filePath = os.path.join(configPath, constants.athorFileName + constants.configFileSuffix)
         archive = open(filePath, 'w')
         archive.write(repr(self. athor))
         archive.close()
 
         return
 
+
+def singleTest():
+    Verify()
+    print(Verify.Verify('tower', '???'))
 
 
 Verify()

@@ -1,4 +1,4 @@
 
-import win32ui
+from verify.verify import singleTest
 
-print(win32ui.__file__)
+singleTest()

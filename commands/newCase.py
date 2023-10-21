@@ -12,7 +12,7 @@ def newCase(cmd, customAddr, link):
     '''
     caseId = cmd.get('caseId','default')
     caseId = 'default' if caseId=='' else caseId
-    casePath = os.path.join(constants.caseFolder, caseId)
+    casePath = os.path.join(constants.homePath, constants.caseFolder, caseId)
     resultPath = os.path.join(casePath, constants.caseResultPathName)
     descFilePath = os.path.join(casePath, constants.caseDescFileName)
 

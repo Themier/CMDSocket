@@ -10,10 +10,10 @@ class ChoiceBox(dict):
 	}
 	'''
 
-	confirmId = 'cf'
-	confirmDesc = 'confirm'
-	cancelId = 'cc'
-	cancelDesc = 'cancel'
+	confirmId = 'confirm'
+	confirmDesc = ''
+	cancelId = 'cancel'
+	cancelDesc = ''
 
 	def __init__(self, choiceMap:dict={}):
 		super().__init__()
@@ -21,7 +21,7 @@ class ChoiceBox(dict):
 
 		return
 
-	def newChoice(self, id, desc):
+	def newChoice(self, id, desc=''):
 		'''
 		'''
 		self[id] = desc

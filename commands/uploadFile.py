@@ -2,8 +2,10 @@
 import os
 import constants
 from commands import CommandBase
+from tools import SingleFileChoicer
 
 uploadFile_id = 'uploadFile'
+uploadFile_latestPath = ''
 
 def makePath(path:str):
     if os.path.isdir(path):
@@ -75,6 +77,7 @@ def genUploadFile(d:dict={})->dict:
         filePath: str 本地文件路径, 在不指定 fileNameAndContent 时生效
         overLoad: bool 是否覆盖同名文件，如果为否，自动重命名
     '''
+    global uploadFile_id, uploadFile_latestPath
     cmd = {'cmdId':uploadFile_id}
     fileFolder = d.get('fileFolder', 'recvFiles')
     fileNameAndContent = d.get('fileNameAndContent', None)
@@ -90,10 +93,11 @@ def genUploadFile(d:dict={})->dict:
             #dlg.SetOFNInitialDir('c:/')
             #dlg.DoModal()
             #filePath = dlg.GetPathName()
-            filePath = input('文件路径：')
+            filePath = SingleFileChoicer().getChoice(uploadFile_latestPath)
         if not os.path.isfile(filePath):
             print('找不到文件： {}'.format(filePath))
             return None
+        uploadFile_latestPath = os.path.dirname(filePath)
         fileName = os.path.basename(filePath)
         file = open(filePath, 'rb')
         fileContent = file.read()
