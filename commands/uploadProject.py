@@ -3,7 +3,7 @@ import os
 import re
 import constants
 from commands import CommandBase
-from commands.uploadFile import makePath
+from tools import PathMaker
 import time
 import shutil
 
@@ -14,13 +14,13 @@ def uploadProject(cmd, customAddr, link)->int:
     '''
     '''
     back_path = os.path.join(constants.prjPath, os.pardir, 'backUps')
-    makePath(back_path)
+    PathMaker().make(back_path)
     shutil.make_archive(os.path.join(back_path, 'updateProject_{}'.format(time.time())),'zip', constants.prjPath)
 
     prjMap = cmd['prjMap']
     for item in prjMap:
         fp = os.path.join(constants.prjPath, item)
-        makePath(os.path.abspath(os.path.join(fp, os.pardir)))
+        PathMaker().make(os.path.abspath(os.path.join(fp, os.pardir)))
         f = open(fp, 'wb')
         if len(prjMap[item]) > 0:
             f.write(prjMap[item])

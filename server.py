@@ -2,14 +2,14 @@
 import socket, sys, os, requests
 from serverAndCustomer.serverBooter import ServerBooter
 from serverAndCustomer.serverTutelage import ServerTutelage
-from commands.uploadFile import makePath
+from tools import PathMaker
 
 # constants
 import constants
 
 # home
 homePath = os.path.abspath(constants.homePath)
-makePath(homePath)
+PathMaker().make(homePath)
 os.chdir(homePath)
 #os.system('explorer.exe {}'.format(homePath))
 

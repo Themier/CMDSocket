@@ -3,23 +3,10 @@ import os
 import constants
 from commands import CommandBase
 from tools import SingleFileChoicer
+from tools import PathMaker
 
 uploadFile_id = 'uploadFile'
 uploadFile_latestPath = ''
-
-def makePath(path:str):
-    if os.path.isdir(path):
-        return True
-
-    parpath = os.path.abspath(os.path.join(path, os.pardir))
-    if not os.path.isdir(parpath):
-        makePath(parpath)
-
-    try:
-        os.mkdir(path)
-        return True
-    except:
-        return False
 
 
 def pathInHome(path:str):
@@ -51,7 +38,7 @@ def uploadFile(cmd, customAddr, link)->int:
     
     filePath = os.path.abspath(os.path.join(fileFolder, fileName))
     fileFolder = os.path.abspath(os.path.join(filePath, os.pardir))
-    makePath(fileFolder)
+    PathMaker().make(fileFolder)
 
     if not overLoad:
         while os.path.isfile(os.path.join(fileFolder, fileName)):

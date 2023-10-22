@@ -1,4 +1,4 @@
 
-from verify.verify import singleTest
+from config.configIOer import singleTest
 
 singleTest()
