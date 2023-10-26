@@ -45,32 +45,65 @@ class ServerTutelage():
         '''
         '''
         while True:
-            print('\n监听中 ...\n')
+            print('\n等待指令中 ...\n')
 
             link, customAddr = self.server.accept()
             print('来自 {} 的访问, 等待指令...'.format(customAddr))
 
             try:
-                cmdList = link.recv(constants.cmdMaxSize).decode('utf-8')
-                bracePosition = cmdList.find('[')
-                dotPosition = cmdList.find(',')
-                while bracePosition  < 0 or dotPosition < 0:
-                    cmdList += link.recv(constants.cmdMaxSize).decode('utf-8')
-                    bracePosition = cmdList.find('[')
-                    dotPosition = cmdList.find(',')
-                cmdSize = cmdList[bracePosition+1: dotPosition]
-                cmdSize = int(cmdSize)
+                latestRecvSize = 0
+                lenBeginFlag = len(constants.cmdStreamBeginFlag)
+                lenEndFlag = len(constants.cmdStreamEndFlag)
+                checkBegin = False
+                cmdStream=''
+                cumulantEmptyRecvTimes = 0
+                while not checkBegin:
+                    recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
+                    if len(recvStream) == 0:
+                        cumulantEmptyRecvTimes += 1
+                        if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
+                            raise '网络传输异常'
+                        continue
+                    latestRecvSize = len(recvStream)
+                    cmdStream += recvStream
+                    if len(cmdStream) < lenBeginFlag:
+                        continue
+                    if cmdStream[:lenBeginFlag] == constants.cmdStreamBeginFlag:
+                        checkBegin = True
+                    else:
+                        raise "命令流起始符错误"
 
-                while len(cmdList) < cmdSize:
-                    cmdList += link.recv(constants.cmdMaxSize).decode('utf-8')
-                if len(cmdList) > cmdSize:
-                    cmdList = cmdList[:cmdSize]
+                checkEnd = False
+                indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
+                if indexEndFlag >= 0:
+                    checkEnd = True
+                cumulantEmptyRecvTimes = 0
+                while not checkEnd:
+                    recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
+                    if len(recvStream) == 0:
+                        cumulantEmptyRecvTimes += 1
+                        if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
+                            raise '网络传输异常或命令流终止符错误'
+                        continue
+                    cmdStream += recvStream
+                    indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
+                    if indexEndFlag >= 0:
+                        checkEnd = True
 
-                print('收到指令, 长度 {}'.format(len(cmdList)))
-                cmdList = eval(cmdList)
+                cmdStream = cmdStream[lenBeginFlag:indexEndFlag]
+                smdSize = len(cmdStream)
+                print('收到指令, 长度 {}'.format(smdSize))
 
-                cmd = cmdList[1]
+                try:
+                    cmd = constants.cmd_parser(cmdStream)
+                except Exception as error:
+                    raise "命令流解析失败，{}".format(error)
+
+                if not isinstance(cmd, constants.cmd_type):
+                    raise "命令非法，合法的命令应当是 {}".format(constants.cmd_type)
+
                 self.__GetCMD(cmd, customAddr, link)
+
             except Exception as result:
                 repl = '发生错误 {}'.format(result)
                 print(repl)

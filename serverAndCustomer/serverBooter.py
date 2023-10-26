@@ -27,8 +27,8 @@ class ServerBooter():
                 self.ip = hostIP
                 self.port = port
                 return True
-            except:
-                pass
+            except Exception as error:
+                print(error)
             
         return False
 
@@ -44,9 +44,12 @@ class ServerBooter():
                         self.switch = 'on'
                         self.ip = ip
                         self.port = port
+                        for i in range(100):
+                            print(' ', end='')
+                        print()
                         return True
-                    except:
-                        pass
+                    except Exception as error:
+                        print('位于 {} 的端口无法使用 : {}'.format((ip, port), error), end='\r')
 
         return False
 

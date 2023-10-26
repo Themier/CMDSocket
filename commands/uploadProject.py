@@ -13,10 +13,11 @@ uploadPrj_ignores = ['^[.]vs$', '^__pycache__$', '^.git$', '.*[.]cfg$']
 def uploadProject(cmd, customAddr, link)->int:
     '''
     '''
+    # 备份
     back_path = os.path.join(constants.prjPath, os.pardir, 'backUps')
     PathMaker().make(back_path)
     shutil.make_archive(os.path.join(back_path, 'updateProject_{}'.format(time.time())),'zip', constants.prjPath)
-
+    # 更新
     prjMap = cmd['prjMap']
     for item in prjMap:
         fp = os.path.join(constants.prjPath, item)

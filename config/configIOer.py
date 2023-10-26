@@ -60,8 +60,16 @@ class ConfigIOer():
         return True
 
 
+    def getSTDConfig(self, id, defaultValue=None):
+        return self.getConfig(constants.stdConfigFileName, id, defaultValue)
+
+
+    def writeSTDConfig(self, id, value):
+        return self.write(constants.stdConfigFileName, id, value)
+
+
 if not PathMaker().make(ConfigIOer.getConfigFolderPath()):
-    raise "config folder cant be generated."
+    raise "config folder can't be generated."
 
 
 def singleTest():

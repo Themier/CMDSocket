@@ -2,21 +2,26 @@
 '''
 '''
 
-import os, sys, time
+import os, sys, time, socket
 import constants
 from commands import CommandBase
 
 reBootServer_id = 'reBootServer'
 
-def reBootServer(cmd, customAddr, link):
+def reBootServer(cmd, customAddr, link:socket.socket):
 	'''
 	'''
-	path = os.path.join(constants.prjPath, 'server.py')
 	link.send(constants.cmd_finish_words.encode('utf-8'))
 	time.sleep(0.5)
+	link.close()
 	constants.server.close()
-	os.system('python {}'.format(path))
-	sys.exit(0)
+	print('服务器已关闭')
+	#os.chdir(constants.prjPath)
+	res = os.system('start cmd /C "cd {} && python server.py"'.format(constants.prjPath))
+	if res!=0:
+		print('服务器重启失败')
+	else:
+		sys.exit(res)
 
 
 def genReBootServer(d:dict={})->dict:

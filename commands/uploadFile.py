@@ -75,11 +75,6 @@ def genUploadFile(d:dict={})->dict:
     if fileNameAndContent == None:
         filePath = d.get('filePath', None)
         if filePath == None:
-            #import win32ui
-            #dlg = win32ui.CreateFileDialog(2)
-            #dlg.SetOFNInitialDir('c:/')
-            #dlg.DoModal()
-            #filePath = dlg.GetPathName()
             filePath = SingleFileChoicer().getChoice(uploadFile_latestPath)
         if not os.path.isfile(filePath):
             print('找不到文件： {}'.format(filePath))

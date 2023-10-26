@@ -6,11 +6,21 @@ maxPort = 60000
 
 maxConnection = 3
 
-cmdMaxSize = 10*1024*1024
+maxSizePerRecv = 10*1024
+
+cmd_type = dict
+cmd_former = repr
+cmd_parser = eval
+
+cmdStreamBeginFlag = '&CMDSKTBG&'
+cmdStreamEndFlag = '&CMDSKTED&'
+
+maxTryRecvTimes = 1000
 
 configFolder = r'configs'
 configFileSuffix = '.cfg'
 athorFileName = 'athor'
+stdConfigFileName = 'config'
 
 caseFolder = r'lbmCase'
 caseInputFileName = 'params.dat'

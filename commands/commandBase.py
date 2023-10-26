@@ -19,4 +19,9 @@ class CommandBase():
         return
 
 
+    @classmethod
+    def GetAllCommandId(self):
+        return list(self.inses.keys())
+
+
     
