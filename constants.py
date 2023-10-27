@@ -1,6 +1,10 @@
 
+from fatal_constants import *
+
 ##
 # hand input ##
+local_name = 'desktop'
+
 minPort = 8000
 maxPort = 60000
 
@@ -8,27 +12,13 @@ maxConnection = 3
 
 maxSizePerRecv = 10*1024
 
-cmd_type = dict
-cmd_former = repr
-cmd_parser = eval
-
-cmdStreamBeginFlag = '&CMDSKTBG&'
-cmdStreamEndFlag = '&CMDSKTED&'
-
-maxTryRecvTimes = 1000
+maxTryRecvTimes = 500
 
 configFolder = r'configs'
 configFileSuffix = '.cfg'
 athorFileName = 'athor'
 stdConfigFileName = 'config'
 
-caseFolder = r'lbmCase'
-caseInputFileName = 'params.dat'
-caseProgrameName = 'program.exe'
-caseResultPathName = 'results'
-caseDescFileName = 'desc.txt'
-
-cmd_finish_words = 'cmd_finish'
 ##
 # hand input over ##
 

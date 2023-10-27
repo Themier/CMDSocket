@@ -1,12 +1,43 @@
-import commands
+#import commands
+import re
 
-str = 'abcdef'
-subStr = 'bc'
+#format = '.*1.*'
+#p = re.compile(format)
+#m = p.match('0101010')
+#print(m)
 
-print(str.find(subStr))
+import constants
 
-str[3]=0
-print(str)
+cmd = {'1':1, '2':2}
+cmdStream = constants.BuildCommandStream(cmd)
+print(type(cmdStream), cmdStream)
+size  = constants.ParseCommandStreamSize(cmdStream)
+print(type(size), size)
+print('check:', constants.CheckCommandStream(cmdStream[:-2], size))
+print('check:', constants.CheckCommandStream(cmdStream, size))
+cmd_ = constants.ParseCommandStream(cmdStream)
+print(type(cmd_), cmd_)
+
+#print(repr(dict()))
+
+#cmd = {'a':1, 'b':'two'}
+
+#cmdStream = commands.CommandBase.BuildCommandStream(cmd)
+#print(cmdStream)
+#print(commands.CommandBase.ParseCommandStream(cmdStream))
+
+
+#str =  '{}{}'
+##former = lambda dictStr:eval(str.format('{}', '{}', len(dictStr), dictStr))
+#former = lambda dictStr:str.format(len(dictStr), dictStr)
+
+#val = former(repr({'1' : 1}))
+#print(val)
+
+#format = "^(\d+)\D+"
+#p = re.compile(format)
+#m = p.match('1234')
+#print(m[1])
 
 ## 获取用户输入的文件路径
 #file_path = input("请输入文件路径：")

@@ -13,20 +13,25 @@ newCase_latestInputFilePath = ''
 newCase_latestProgramPath = ''
 newCase_latestCaseDescription = 'no description'
 
+caseFolder = r'lbmCase'
+caseInputFileName = 'params.dat'
+caseProgrameName = 'program.exe'
+caseResultPathName = 'results'
+caseDescFileName = 'desc.txt'
 
 def newCase(cmd, customAddr, link):
     '''
     '''
+    global caseFolder, caseInputFileName, caseProgrameName, caseResultPathName, caseDescFileName
     caseId = cmd.get('caseId','default')
     caseId = 'default' if caseId=='' else caseId
-    casePath = os.path.join(constants.homePath, constants.caseFolder, caseId)
-    resultPath = os.path.join(casePath, constants.caseResultPathName)
-    descFilePath = os.path.join(casePath, constants.caseDescFileName)
+    casePath = os.path.join(constants.homePath, caseFolder, caseId)
+    resultPath = os.path.join(casePath, caseResultPathName)
 
     newFileCMD = {'overLoad':True}
     newFileCMD.update(cmd)
     newFileCMD['fileFolder'] = casePath
-    newFileCMD['fileName'] = cmd.get('inputFileName', constants.caseInputFileName)
+    newFileCMD['fileName'] = cmd.get('inputFileName', caseInputFileName)
     newFileCMD['fileSize'] = cmd.get('inputFileSize', 0)
     newFileCMD['fileContent'] = cmd.get('inputFileContent', '')
     uploadFile(newFileCMD, customAddr, link)
@@ -34,12 +39,12 @@ def newCase(cmd, customAddr, link):
     caseDesc = cmd.get('description', b'no description')
     if len(caseDesc) == 0:
         caseDesc = b'no description'
-    newFileCMD['fileName'] = constants.caseDescFileName
+    newFileCMD['fileName'] = caseDescFileName
     newFileCMD['fileSize'] = len(caseDesc)
     newFileCMD['fileContent'] = caseDesc
     uploadFile(newFileCMD, customAddr, link)
 
-    newFileCMD['fileName'] = cmd.get('inputFileName', constants.caseProgrameName)
+    newFileCMD['fileName'] = cmd.get('inputFileName', caseProgrameName)
     newFileCMD['fileSize'] = cmd.get('programSize', 0)
     newFileCMD['fileContent'] = cmd.get('programContent')
     newFileCMD['contentMode'] = 'binary'

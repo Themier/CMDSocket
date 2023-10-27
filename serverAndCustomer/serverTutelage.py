@@ -9,6 +9,7 @@ class ServerTutelage():
     '''
     '''
 
+    ins = None
 
     def __init__(self, server:socket):
         self.server = server
@@ -51,56 +52,54 @@ class ServerTutelage():
             print('来自 {} 的访问, 等待指令...'.format(customAddr))
 
             try:
-                latestRecvSize = 0
-                lenBeginFlag = len(constants.cmdStreamBeginFlag)
-                lenEndFlag = len(constants.cmdStreamEndFlag)
-                checkBegin = False
                 cmdStream=''
+                latestRecvSize = 0
+                #lenBeginFlag = len(constants.cmdStreamBeginFlag)
+                #lenEndFlag = len(constants.cmdStreamEndFlag)
                 cumulantEmptyRecvTimes = 0
-                while not checkBegin:
+                cmdSize = None
+                while cmdSize == None:
                     recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
-                    if len(recvStream) == 0:
-                        cumulantEmptyRecvTimes += 1
-                        if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
-                            raise '网络传输异常'
-                        continue
                     latestRecvSize = len(recvStream)
-                    cmdStream += recvStream
-                    if len(cmdStream) < lenBeginFlag:
+                    if latestRecvSize == 0:
+                        cumulantEmptyRecvTimes += 1
+                        if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
+                            raise Exception('网络传输异常')
                         continue
-                    if cmdStream[:lenBeginFlag] == constants.cmdStreamBeginFlag:
-                        checkBegin = True
-                    else:
-                        raise "命令流起始符错误"
+                    cmdStream += recvStream
+                    cmdSize = constants.ParseCommandStreamSize(cmdStream)
+                print('收到指令, 长度 {}'.format(cmdSize))
 
-                checkEnd = False
-                indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
-                if indexEndFlag >= 0:
-                    checkEnd = True
-                cumulantEmptyRecvTimes = 0
-                while not checkEnd:
+                while not constants.CheckCommandStream(cmdStream, cmdSize):
                     recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
                     if len(recvStream) == 0:
                         cumulantEmptyRecvTimes += 1
                         if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
-                            raise '网络传输异常或命令流终止符错误'
+                            raise Exception('网络传输异常或命令流终止符错误')
                         continue
                     cmdStream += recvStream
-                    indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
-                    if indexEndFlag >= 0:
-                        checkEnd = True
 
-                cmdStream = cmdStream[lenBeginFlag:indexEndFlag]
-                smdSize = len(cmdStream)
-                print('收到指令, 长度 {}'.format(smdSize))
+                #checkEnd = False
+                #indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
+                #if indexEndFlag >= 0:
+                #    checkEnd = True
+                #cumulantEmptyRecvTimes = 0
+                #while not checkEnd:
+                #    cmdStream += recvStream
+                #    indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
+                #    if indexEndFlag >= 0:
+                #        checkEnd = True
+
+                #cmdStream = cmdStream[lenBeginFlag:indexEndFlag]
+                #smdSize = len(cmdStream)
 
                 try:
-                    cmd = constants.cmd_parser(cmdStream)
+                    cmd = constants.ParseCommandStream(cmdStream)
                 except Exception as error:
-                    raise "命令流解析失败，{}".format(error)
+                    raise Exception("命令流解析失败，{}".format(error))
 
                 if not isinstance(cmd, constants.cmd_type):
-                    raise "命令非法，合法的命令应当是 {}".format(constants.cmd_type)
+                    raise Exception("命令非法，合法的命令应当是 {}".format(constants.cmd_type))
 
                 self.__GetCMD(cmd, customAddr, link)
 
@@ -109,5 +108,5 @@ class ServerTutelage():
                 print(repl)
                 link.send(repl.encode('utf-8'))
 
-            link.send('cmd_finish'.encode('utf-8'))
+            link.send(constants.cmd_finish_words.encode('utf-8'))
             link.close()

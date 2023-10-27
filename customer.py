@@ -54,7 +54,7 @@ def main(userImformation:dict):
         try:
             if inp in CommandBase.inses:
                 cmd = CommandBase.inses[inp].Gen()
-                if cmd == None:
+                if not isinstance(cmd, constants.cmd_type):
                     print('指令生成失败')
                 elif inp[0] == '*':   # 本地命令
                     CommandBase.inses[inp].Action(cmd, None, None)
@@ -62,7 +62,7 @@ def main(userImformation:dict):
                     customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     customer.connect(('192.168.41.129', 8000))
                     cmd.update(userImformation)
-                    cmdStream = '{}{}{}'.format(constants.cmdStreamBeginFlag, repr(cmd), constants.cmdStreamEndFlag)
+                    cmdStream = constants.BuildCommandStream(cmd)
                     customer.send(cmdStream.encode('utf-8'))
                     while True:
                         reply = customer.recv(constants.maxSizePerRecv).decode('utf-8')
