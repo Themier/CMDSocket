@@ -24,7 +24,8 @@ class ConfigIOer():
         '''
         return os.path.join(self.getConfigFolderPath(), title + constants.configFileSuffix)
 
-
+    
+    @classmethod
     def getConfig(self, title, id, defaultValue=None):
         '''
         '''
@@ -41,7 +42,8 @@ class ConfigIOer():
 
         return defaultValue
 
-
+    
+    @classmethod
     def write(self, title, id, value)->bool:
         '''
         '''
@@ -59,11 +61,13 @@ class ConfigIOer():
         configFile.close()
         return True
 
-
+    
+    @classmethod
     def getSTDConfig(self, id, defaultValue=None):
         return self.getConfig(constants.stdConfigFileName, id, defaultValue)
 
-
+    
+    @classmethod
     def writeSTDConfig(self, id, value):
         return self.write(constants.stdConfigFileName, id, value)
 

@@ -83,4 +83,4 @@ def genMakeGif(d:dict={}):
             return None
 
 
-CommandBase(makeGif_id, makeGif, genMakeGif)
+CommandBase(setLink_id, setLink, genSetLink)

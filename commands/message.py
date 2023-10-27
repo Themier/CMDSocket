@@ -6,8 +6,14 @@ import os, sys, time
 import constants
 from commands import CommandBase
 from tools import ChoiceBox
+from config import ConfigIOer
 
 message_id = 'message'
+
+latestMessageFromId = 'cmdArg_message_latestMessageFrom'
+latestMessageContentId = 'cmdArg_message_latestContent'
+defaultMessageFrom = 'anonymous'
+defaultMessageContent = 'hello from anonymous'
 
 def message(cmd, customAddr, link):
 	'''
@@ -21,10 +27,11 @@ def message(cmd, customAddr, link):
 
 
 def genMessage(d:dict={})->dict:
+	global message_id, latestMessageFromId, defaultMessageFrom, latestMessageContentId, defaultMessageContent
 	cmd={}
 	cmd['cmdId'] = message_id
-	messageFrom = d.get('messageFrom', 'anonymous')
-	message = d.get('message', 'default message')
+	messageFrom = d.get('messageFrom', ConfigIOer().getSTDConfig(latestMessageFromId, defaultMessageFrom))
+	message = d.get('message', ConfigIOer().getSTDConfig(latestMessageContentId, defaultMessageContent))
 	while True:
 		cb = ChoiceBox()
 		cb.newChoice('messageFrom', messageFrom)
@@ -36,9 +43,11 @@ def genMessage(d:dict={})->dict:
 			message = input('new message:\n')
 		elif inp == ChoiceBox.confirmId or inp == ChoiceBox.cancelId:
 			break
+
+	ConfigIOer().writeSTDConfig(latestMessageFromId, messageFrom)
+	ConfigIOer().writeSTDConfig(latestMessageContentId, message)
 	cmd['messageFrom'] = messageFrom
 	cmd['message'] = message
-
 	return cmd
 
 

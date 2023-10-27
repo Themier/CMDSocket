@@ -1,22 +1,26 @@
 #import commands
-import re
+#import re
+
+#import os
+
+#print(os.path.basename('not a path'))
 
 #format = '.*1.*'
 #p = re.compile(format)
 #m = p.match('0101010')
 #print(m)
 
-import constants
+#import constants
 
-cmd = {'1':1, '2':2}
-cmdStream = constants.BuildCommandStream(cmd)
-print(type(cmdStream), cmdStream)
-size  = constants.ParseCommandStreamSize(cmdStream)
-print(type(size), size)
-print('check:', constants.CheckCommandStream(cmdStream[:-2], size))
-print('check:', constants.CheckCommandStream(cmdStream, size))
-cmd_ = constants.ParseCommandStream(cmdStream)
-print(type(cmd_), cmd_)
+#cmd = {'1':1, '2':2}
+#cmdStream = constants.BuildCommandStream(cmd)
+#print(type(cmdStream), cmdStream)
+#size  = constants.ParseCommandStreamSize(cmdStream)
+#print(type(size), size)
+#print('check:', constants.CheckCommandStream(cmdStream[:-2], size))
+#print('check:', constants.CheckCommandStream(cmdStream, size))
+#cmd_ = constants.ParseCommandStream(cmdStream)
+#print(type(cmd_), cmd_)
 
 #print(repr(dict()))
 

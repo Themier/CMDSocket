@@ -39,7 +39,9 @@ class ServerTutelage():
             print('用户 {} 身份验证通过'.format(username))
             self.__ParseCMD(cmd, customAddr, link)
         else:
-            print('身份验证失败：{} - {}'.format(username, password))
+            repl = '身份验证失败：{}'.format(username)
+            print(repl)
+            link.send(repl.encode('utf-8'))
 
 
     def Tutelage(self):

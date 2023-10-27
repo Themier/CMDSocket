@@ -28,13 +28,12 @@ def initial():
     try:
         hostIP = requests.get('http://httpbin.org/ip').json()['origin']
     except Exception as result:
-        print('获取公网 IP 失败。', result)
+        print('获取公网 IP 失败：', result)
 
-    #courtesy   
     print(courtesyStr)
     print('服务器主机名: {}'.format(hostname))
-    print('服务器主机 ip: {}'.format(hostIP))
     print('服务器主机 ip: {}'.format(hostip))
+    print('服务器主机 ip: {}'.format(hostIP))
     print('端口范围: {} - {}'.format(constants.minPort, constants.maxPort))
 
     return hostname, hostip, hostIP

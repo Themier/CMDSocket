@@ -4,9 +4,12 @@ import constants
 from commands import CommandBase
 from tools import SingleFileChoicer
 from tools import PathMaker
+from tools import ChoiceBox
+from config import ConfigIOer
 
 uploadFile_id = 'uploadFile'
-uploadFile_latestPath = ''
+latestPathId = 'cmdArg_uploadFile_latestPath'
+defaultFilePath = ''
 
 
 def pathInHome(path:str):
@@ -60,35 +63,34 @@ def genUploadFile(d:dict={})->dict:
     '''
     d:
         fileFolder: str 上传到服务器的哪个文件
-        fileNameAndContent: list[fileName:str, fileContent:bstr] 文件名和内容
         filePath: str 本地文件路径, 在不指定 fileNameAndContent 时生效
         overLoad: bool 是否覆盖同名文件，如果为否，自动重命名
     '''
-    global uploadFile_id, uploadFile_latestPath
+    global uploadFile_id, latestPathId, defaultFilePath
     cmd = {'cmdId':uploadFile_id}
-    fileFolder = d.get('fileFolder', 'recvFiles')
-    fileNameAndContent = d.get('fileNameAndContent', None)
-    overLoad = d.get('overLoad', False)
-    filePath = None
-    fileName = None
-    fileContent = None
-    if fileNameAndContent == None:
-        filePath = d.get('filePath', None)
-        if filePath == None:
-            filePath = SingleFileChoicer().getChoice(uploadFile_latestPath)
-        if not os.path.isfile(filePath):
-            print('找不到文件： {}'.format(filePath))
-            return None
-        uploadFile_latestPath = os.path.dirname(filePath)
-        fileName = os.path.basename(filePath)
-        file = open(filePath, 'rb')
-        fileContent = file.read()
-    else:
-        fileName = fileNameAndContent[0]
-        fileContent = fileNameAndContent[1]
-    fileSize = len(fileContent)
-    cmd.update({'fileName':fileName, 'fileFolder':fileFolder, 'fileContent':fileContent, 'fileSize':fileSize, 'overLoad':overLoad})
 
+    fileFolder = d.get('fileFolder', 'recvFiles')
+    overLoad = d.get('overLoad', False)
+    filePath = d.get('filePath', ConfigIOer.getSTDConfig(latestPathId, defaultFilePath))
+
+    while True:
+        cb = ChoiceBox()
+        cb.newChoice('filePath', filePath)
+        inp = cb.getChoice()
+        if inp == 'filePath':
+            filePath = SingleFileChoicer.getChoice(filePath)
+        elif inp == ChoiceBox.confirmId:
+            ConfigIOer.writeSTDConfig(latestPathId, filePath)
+            fileName = os.path.basename(filePath)
+            file = open(filePath, 'rb')
+            fileContent = file.read()
+            file.close()
+            fileSize = len(fileContent)
+            break
+        elif inp == ChoiceBox.cancelId:
+            return None
+        
+    cmd.update({'fileName':fileName, 'fileFolder':fileFolder, 'fileContent':fileContent, 'fileSize':fileSize, 'overLoad':overLoad})
     return cmd
 
 

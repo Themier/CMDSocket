@@ -6,7 +6,7 @@ from fatal_constants import *
 local_name = 'desktop'
 
 minPort = 8000
-maxPort = 60000
+maxPort = 20000
 
 maxConnection = 3
 
@@ -18,6 +18,11 @@ configFolder = r'configs'
 configFileSuffix = '.cfg'
 athorFileName = 'athor'
 stdConfigFileName = 'config'
+
+latestLinkIPConfigId = 'localArg_latestLinkIP'
+latestLinkPortConfigId = 'localArg_latestLinkPort'
+latestUsernameConfigId = 'localArg_latestUsername'
+latestPasswordConfigId = 'localArg_latestPassword'
 
 ##
 # hand input over ##

@@ -11,21 +11,23 @@ class Verify():
     '''
 
     athor = None
+    athorFilePath = None
 
     def __init__(self):
         if Verify.athor == None:
             Verify.athor = {}
-            configPath = constants.configFolder
+
+            configPath = os.path.join(constants.homePath, constants.configFolder)
             if not os.path.exists(configPath):
                 os.mkdir(configPath)
-
-            filePath = os.path.join(configPath, constants.athorFileName + constants.configFileSuffix)
-            if not os.path.isfile(filePath):
+                
+            Verify.athorFilePath = os.path.join(configPath, constants.athorFileName + constants.configFileSuffix)
+            if not os.path.isfile(Verify.athorFilePath):
                 userImformation = UserImformation({'username':'tower','password':'tower^10'})
                 Verify.athor.update({userImformation['username'] : userImformation})
                 Verify.UpdateArchive()
             else:
-                file = open(filePath, 'r')
+                file = open(Verify.athorFilePath, 'r')
                 dict = eval(file.read())
                 for username in dict:
                     Verify.athor[username] = UserImformation(dict[username])
@@ -59,9 +61,7 @@ class Verify():
     def UpdateArchive(self):
         '''
         '''
-        configPath = constants.configFolder
-        filePath = os.path.join(configPath, constants.athorFileName + constants.configFileSuffix)
-        archive = open(filePath, 'w')
+        archive = open(Verify.athorFilePath, 'w')
         archive.write(repr(self. athor))
         archive.close()
 

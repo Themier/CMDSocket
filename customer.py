@@ -7,10 +7,10 @@ from tools import ChoiceBox
 from config import ConfigIOer
 
 
-def genUserImformation():
-    username = ConfigIOer().getSTDConfig('customer_local_username')
-    password = ConfigIOer().getSTDConfig('customer_local_password')
-    while username == None or len(username) == 0:
+def prepareUserImformation():
+    username = ConfigIOer().getSTDConfig(constants.latestUsernameConfigId)
+    password = ConfigIOer().getSTDConfig(constants.latestPasswordConfigId)
+    while username == None:
         username = input('input uername: ')
         password = getpass.getpass('input password: ')
 
@@ -34,15 +34,39 @@ def genUserImformation():
         elif inp == ChoiceBox.cancelId:
             sys.exit(0)
 
-    ConfigIOer().writeSTDConfig('customer_local_username', username)
-    ConfigIOer().writeSTDConfig('customer_local_password', password)
-    return { \
-        'username':username\
-        ,'password':password\
-        }
+    ConfigIOer().writeSTDConfig(constants.latestUsernameConfigId, username)
+    ConfigIOer().writeSTDConfig(constants.latestPasswordConfigId, password)
+    return
 
 
-def main(userImformation:dict):
+def prepareLinkImformation():
+    ip = ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId)
+    port = ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId)
+    while ip == None:
+        ip = input('input link ip: ')
+        port = input('input link port: ')
+
+    cb = ChoiceBox()
+    cb.newChoice('reinput link ip')
+    cb.newChoice('reinput link port')
+    while True:
+        inp = cb.getChoice('{}: {}'.format(ip, port))
+        if inp == 'reinput link ip':
+            ip = input('input link ip: ')
+        elif inp == 'reinput link port':
+            port = input('input link port: ')
+        elif inp == ChoiceBox.confirmId:
+            break
+        elif inp == ChoiceBox.cancelId:
+            sys.exit(0)
+
+    ConfigIOer().writeSTDConfig(constants.latestLinkIPConfigId, ip)
+    ConfigIOer().writeSTDConfig(constants.latestLinkPortConfigId, port)
+    return
+
+
+def main():
+
     cmds = CommandBase.GetAllCommandId()
     cb = ChoiceBox()
     for item in cmds:
@@ -60,8 +84,14 @@ def main(userImformation:dict):
                     CommandBase.inses[inp].Action(cmd, None, None)
                 else:   # 远程命令
                     customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    customer.connect(('192.168.41.129', 8000))
-                    cmd.update(userImformation)
+                    customer.connect((\
+                        ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId), \
+                        int(ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId))\
+                        ))
+                    cmd.update({\
+                        'username': ConfigIOer().getSTDConfig(constants.latestUsernameConfigId)\
+                        , 'password': ConfigIOer().getSTDConfig(constants.latestPasswordConfigId)\
+                        })
                     cmdStream = constants.BuildCommandStream(cmd)
                     customer.send(cmdStream.encode('utf-8'))
                     while True:
@@ -81,7 +111,9 @@ def main(userImformation:dict):
 
 if __name__ == '__main__':
     try:
-        main(genUserImformation())
+        prepareUserImformation()
+        prepareLinkImformation()
+        main()
     except Exception as error:
         print('发生错误: \n{}'.format(error))
 

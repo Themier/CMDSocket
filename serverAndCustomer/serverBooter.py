@@ -37,6 +37,7 @@ class ServerBooter():
         '''
         '''
         if self.switch == 'off':
+            latestExceptionLen = 0
             for ip in hostIPs:
                 for port in ports:
                     try:
@@ -44,12 +45,14 @@ class ServerBooter():
                         self.switch = 'on'
                         self.ip = ip
                         self.port = port
-                        for i in range(100):
+                        for i in range(latestExceptionLen):
                             print(' ', end='')
                         print()
                         return True
                     except Exception as error:
-                        print('位于 {} 的端口无法使用 : {}'.format((ip, port), error), end='\r')
+                        msg = '位于 {} 的端口无法使用 : {}'.format((ip, port), error)
+                        latestExceptionLen = len(msg)
+                        print(msg, end='\r')
 
         return False
 

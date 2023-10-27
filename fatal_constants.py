@@ -24,12 +24,17 @@ cmd_finish_words = 'cmd_finish'
 
 def BuildCommandStream(cmd:dict):
     '''
+        根据命令描述字典生成命令流
     '''
     cmdStr = streamBuilder(cmd)
     return cmdStreamBuilder(cmdStr)
 
 
 def ParseCommandStreamSize(cmdStreamHead):
+    '''
+        根据命令流的头部分析命令长度
+        若命令错误或头部不完整，返回 None
+    '''
     p = re.compile(cmdStreamParseSizeFormat)
     m = p.match(cmdStreamHead)
     if m != None:
@@ -38,13 +43,20 @@ def ParseCommandStreamSize(cmdStreamHead):
 
 
 def CheckCommandStream(cmdStream, size)->bool:
+    '''
+        根据命令流及已知的命令长度分析命令流是否完整
+    '''
     p = re.compile(cmdStreamParseFormat)
     m = p.match(cmdStream)
     if m==None:
         return False
     return len(m[1]) == size
 
+
 def ParseCommandStream(cmdStream):
+    '''
+        将命令流还原为命令描述字典
+    '''
     p = re.compile(cmdStreamParseFormat)
     m = p.match(cmdStream)
     if m != None:
