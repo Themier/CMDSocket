@@ -9,6 +9,7 @@ from tools import ChoiceBox
 from config import ConfigIOer
 
 message_id = 'message'
+message_abbr = ['msg']
 
 latestMessageFromId = 'cmdArg_message_latestMessageFrom'
 latestMessageContentId = 'cmdArg_message_latestContent'
@@ -34,8 +35,8 @@ def genMessage(d:dict={})->dict:
 	message = d.get('message', ConfigIOer().getSTDConfig(latestMessageContentId, defaultMessageContent))
 	while True:
 		cb = ChoiceBox()
-		cb.newChoice('messageFrom', messageFrom)
-		cb.newChoice('message', message)
+		cb.newChoice('messageFrom', desc=messageFrom)
+		cb.newChoice('message', desc=message)
 		inp = cb.getChoice()
 		if inp == 'messageFrom':
 			messageFrom = input('where from?\n')
@@ -51,5 +52,5 @@ def genMessage(d:dict={})->dict:
 	return cmd
 
 
-CommandBase(message_id, message, genMessage)
+CommandBase(message_id, message, genMessage, abbr=message_abbr)
 

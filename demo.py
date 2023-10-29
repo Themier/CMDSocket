@@ -1,6 +1,10 @@
 #import commands
 #import re
 
+from tools.choiceBox import singleTest
+
+singleTest()
+
 #import os
 
 #print(os.path.basename('not a path'))

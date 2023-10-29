@@ -7,6 +7,7 @@ import constants
 from commands import CommandBase
 
 reBootServer_id = 'reBootServer'
+reBootServer_abbr = ['rbs']
 
 def reBootServer(cmd, customAddr, link:socket.socket):
 	'''
@@ -31,5 +32,5 @@ def genReBootServer(d:dict={})->dict:
 	return cmd
 
 
-CommandBase(reBootServer_id, reBootServer, genReBootServer)
+CommandBase(reBootServer_id, reBootServer, genReBootServer, abbr=reBootServer_abbr)
 

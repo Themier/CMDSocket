@@ -12,6 +12,7 @@ from commands import CommandBase
 from tools import ChoiceBox
 
 makeGif_id = '*makeGif'
+makeGif_abbr = '*mg'
 makeGif_latestSourcePaths = []
 makeGif_latestNums = []
 makeGif_latestBeginAt = []
@@ -83,4 +84,4 @@ def genMakeGif(d:dict={}):
             return None
 
 
-CommandBase(makeGif_id, makeGif, genMakeGif)
+CommandBase(makeGif_id, makeGif, genMakeGif, abbr=makeGif_abbr)

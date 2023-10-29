@@ -9,6 +9,7 @@ from tools import SingleFileChoicer
 from config import ConfigIOer
 
 newCase_id = 'newCase'
+newCase_abbr = ['nc']
 caseFolder = r'lbmCase'
 caseDescFileName = 'case_describe.txt'
 
@@ -72,11 +73,11 @@ def genNewCase(d:dict={}):
     cmd['description'] = d.get('description', ConfigIOer().getSTDConfig(latestCaseDescriptionId, defaultCaseDescription))
     while True:
         cb = ChoiceBox()
-        cb.newChoice('caseId', cmd['caseId'])
-        cb.newChoice('inputFilePath', cmd['inputFilePath'])
-        cb.newChoice('programPath', cmd['programPath'])
-        cb.newChoice('outputFolder', cmd['outputFolder'])
-        cb.newChoice('description', cmd['description'])
+        cb.newChoice('caseId', desc=cmd['caseId'])
+        cb.newChoice('inputFilePath', desc=cmd['inputFilePath'])
+        cb.newChoice('programPath', desc=cmd['programPath'])
+        cb.newChoice('outputFolder', desc=cmd['outputFolder'])
+        cb.newChoice('description', desc=cmd['description'])
         inp = cb.getChoice()
         if inp == 'caseId':
             cmd['caseId'] = input('new id: ')
@@ -114,4 +115,4 @@ def genNewCase(d:dict={}):
             return cmd
 
 
-CommandBase(newCase_id, newCase, genNewCase)
+CommandBase(newCase_id, newCase, genNewCase, abbr=newCase_abbr)

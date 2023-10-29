@@ -8,6 +8,7 @@ from tools import ChoiceBox
 from config import ConfigIOer
 
 uploadFile_id = 'uploadFile'
+uploadFile_abbr = ['uf']
 latestPathId = 'cmdArg_uploadFile_latestPath'
 defaultFilePath = ''
 
@@ -75,7 +76,7 @@ def genUploadFile(d:dict={})->dict:
 
     while True:
         cb = ChoiceBox()
-        cb.newChoice('filePath', filePath)
+        cb.newChoice('filePath', desc=filePath)
         inp = cb.getChoice()
         if inp == 'filePath':
             filePath = SingleFileChoicer.getChoice(filePath)
@@ -94,5 +95,5 @@ def genUploadFile(d:dict={})->dict:
     return cmd
 
 
-CommandBase(uploadFile_id, uploadFile, genUploadFile)
+CommandBase(uploadFile_id, uploadFile, genUploadFile, abbr=uploadFile_abbr)
 

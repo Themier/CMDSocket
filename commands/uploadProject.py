@@ -8,6 +8,7 @@ import time
 import shutil
 
 uploadPrj_id = 'uploadProject'
+uploadPrj_abbr = ['up']
 uploadPrj_ignores = ['^[.]vs$', '^__pycache__$', '^.git$', '.*[.]cfg$']
 
 def uploadProject(cmd, customAddr, link)->int:
@@ -68,5 +69,5 @@ def genUploadProject(d:dict={})->dict:
     return cmd
 
 
-CommandBase(uploadPrj_id, uploadProject, genUploadProject)
+CommandBase(uploadPrj_id, uploadProject, genUploadProject, abbr=uploadPrj_abbr)
 
