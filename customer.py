@@ -40,14 +40,14 @@ def main():
     cb = ChoiceBox()
     for item in cmds:
         cb.newChoice(item, abbr=CommandBase.GetCommandAbbr(item))
+    print("\n用户名 {}".format(ConfigIOer().getSTDConfig(constants.latestUsernameConfigId)))
+    print("\n目标服务器 ip {}:{}".format(ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId), ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId)))
     while True:
-        print("\n用户名 {}".format(ConfigIOer().getSTDConfig(constants.latestUsernameConfigId)))
-        print("\n目标服务器 ip {}:{}".format(ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId), ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId)))
         inp = cb.getChoice('\n选择指令：', addConfirm=False, addCancel=False)
 
         try:
             if not inp in CommandBase.inses:
-                raise Exception('指令无效，可用的指令：{}'.format(IterableToStr(CommandBase.inses.keys(), sep='; ')))
+                raise Exception('输入的指令无效')
             cmd = CommandBase.inses[inp].Gen()
             if not isinstance(cmd, constants.cmd_type):
                 raise Exception('指令未生成')

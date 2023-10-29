@@ -10,9 +10,14 @@ class IterableToStr:
         tail = d.get('tail', '')
         converter = d.get('converter', repr)
 
+        n=len(l)
+        i=0
         result = ''
-        for item in l[:-1]:
-            result+='{}{}'.format(converter(item), sep)
-        result+=converter(l[-1])
+        for item in l:
+            if i == n-1:
+                result+=converter(item)
+            else:
+                result+='{}{}'.format(converter(item), sep)
+            i+=1
         result = '{}{}{}'.format(head, result, tail)
         return result

@@ -1,9 +1,10 @@
 #import commands
 #import re
 
-from tools.choiceBox import singleTest
+d = {1:'1', 2:'2'}
 
-singleTest()
+for i in d.keys():
+    print(i)
 
 #import os
 
