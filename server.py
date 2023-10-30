@@ -43,7 +43,7 @@ def main(hostname, hostip, hostIP):
     '''
     '''
     serverBooter = ServerBooter()
-    tryBindIps = [ip for ip in [hostIP, hostip] if ip != None]
+    tryBindIps = [ip for ip in ['0.0.0.0', hostIP, hostip] if ip != None]
     if serverBooter.TryBoot(tryBindIps, range(constants.minPort, constants.maxPort)):
         print('\n服务器启动 {}:{}\n'.format(serverBooter.ip, serverBooter.port))
     else:

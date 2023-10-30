@@ -1,11 +1,11 @@
 
 import os
 import constants
-from commands import CommandBase
-from commands.uploadFile import uploadFile, pathInHome
+from ..coreCommands import CommandBase, uploadFile
 from tools import ChoiceBox
 from tools import PathMaker
 from tools import SingleFileChoicer
+from tools import PathIncludeChecker
 from config import ConfigIOer
 
 newCase_id = 'newCase'
@@ -54,7 +54,7 @@ def newCase(cmd, customAddr, link):
     newFileCMD['fileContent'] = cmd.get('programContent')
     uploadFile(newFileCMD, customAddr, link)
 
-    if pathInHome(outputPath):
+    if PathIncludeChecker.IsInclude(constants.homePath, outputPath):
         PathMaker().make(outputPath)
 
     repl = '算例 {} 接收完成'.format(caseId)

@@ -2,7 +2,7 @@
 import os
 import re
 import constants
-from commands import CommandBase
+from . import CommandBase
 from tools import PathMaker
 from tools import ChoiceBox
 import time

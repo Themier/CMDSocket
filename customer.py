@@ -52,7 +52,6 @@ def main():
             if not isinstance(cmd, constants.cmd_type):
                 raise Exception('指令未生成')
             elif inp[0] == '*':
-                print('在本地执行指令')
                 CommandBase.inses[inp].Action(cmd, None, None)
             else:
                 targetIP = ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId)

@@ -1,23 +1,17 @@
 
 import os
 import constants
-from commands import CommandBase
+from . import CommandBase
 from tools import SingleFileChoicer
 from tools import PathMaker
 from tools import ChoiceBox
+from tools import PathIncludeChecker
 from config import ConfigIOer
 
 uploadFile_id = 'uploadFile'
 uploadFile_abbr = ['uf']
 latestPathId = 'cmdArg_uploadFile_latestPath'
 defaultFilePath = ''
-
-
-def pathInHome(path:str):
-    absHome = os.path.abspath(constants.homePath)
-    absPath = os.path.abspath(path)
-    n = len(absHome)
-    return absPath[:n] == absHome[:n]
 
 
 def uploadFile(cmd, customAddr, link)->int:
@@ -34,7 +28,10 @@ def uploadFile(cmd, customAddr, link)->int:
         completePercent = 100.0
     complete = (fileSize == recvFileSize)
     
-    if not (pathInHome(os.path.join(fileFolder, fileName)) and pathInHome(fileFolder)):
+    if not (\
+        PathIncludeChecker.IsInclude(constants.homePath, os.path.join(fileFolder, fileName)) \
+        and PathIncludeChecker.IsInclude(constants.homePath, os.path.join(fileFolder)) \
+        ):
         reply='文件传输失败：指定的路径超出了服务器权限 {}'.format(os.path.join(fileFolder, fileName))
         print(reply)
         link.send(reply.encode('utf-8'))
@@ -77,7 +74,8 @@ def genUploadFile(d:dict={})->dict:
     while True:
         cb = ChoiceBox()
         #file
-        cb.newChoice('文件路径', desc=filePath)
+        fileExists = 'exists' if os.path.isfile(filePath) else 'NOT exists'
+        cb.newChoice('文件路径', desc='[{}]{}'.format(fileExists, filePath))
         inp = cb.getChoice()
         if inp == '文件路径':
             filePath = SingleFileChoicer().getChoice(filePath)

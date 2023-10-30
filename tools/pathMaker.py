@@ -9,6 +9,7 @@ class PathMaker:
         pass
 
 
+    @classmethod
     def make(self, path:str)->bool:
         '''
         '''

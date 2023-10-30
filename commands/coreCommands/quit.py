@@ -1,6 +1,6 @@
 
 import sys
-from commands import CommandBase
+from . import CommandBase
 
 quit_id = '*quit'
 quit_abbr = '*qt'

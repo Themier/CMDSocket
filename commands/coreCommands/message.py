@@ -4,7 +4,7 @@
 
 import os, sys, time
 import constants
-from commands import CommandBase
+from . import CommandBase
 from tools import ChoiceBox
 from config import ConfigIOer
 

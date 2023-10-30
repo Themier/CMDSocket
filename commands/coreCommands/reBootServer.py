@@ -4,7 +4,7 @@
 
 import os, sys, time, socket
 import constants
-from commands import CommandBase
+from . import CommandBase
 from tools import ChoiceBox
 
 reBootServer_id = 'reBootServer'

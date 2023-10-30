@@ -1,6 +1,6 @@
 
 import socket
-from commands import CommandBase
+from . import CommandBase
 import constants
 from tools import ChoiceBox
 from config import ConfigIOer
