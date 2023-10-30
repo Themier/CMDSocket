@@ -21,8 +21,8 @@ def message(cmd, customAddr, link):
 	'''
 	messageFrom = cmd.get('messageFrom', 'anonymous')
 	message = cmd.get('message', 'default message')
-	print("get message from {} {} :\n{}".format(messageFrom, customAddr, message))
-	reply = 'messageGet'
+	print("从 {} ({}) 收到了消息 :\n{}".format(messageFrom, customAddr, message))
+	reply = '消息已接收'
 	link.send(reply.encode('utf-8'))
 	return
 
@@ -31,18 +31,20 @@ def genMessage(d:dict={})->dict:
 	global message_id, latestMessageFromId, defaultMessageFrom, latestMessageContentId, defaultMessageContent
 	cmd={}
 	cmd['cmdId'] = message_id
-	messageFrom = d.get('messageFrom', ConfigIOer().getSTDConfig(latestMessageFromId, defaultMessageFrom))
-	message = d.get('message', ConfigIOer().getSTDConfig(latestMessageContentId, defaultMessageContent))
+	messageFrom = d.get('签名', ConfigIOer().getSTDConfig(latestMessageFromId, defaultMessageFrom))
+	message = d.get('消息', ConfigIOer().getSTDConfig(latestMessageContentId, defaultMessageContent))
 	while True:
 		cb = ChoiceBox()
-		cb.newChoice('messageFrom', desc=messageFrom)
-		cb.newChoice('message', desc=message)
+		cb.newChoice('签名', desc=messageFrom)
+		cb.newChoice('消息内容', desc=message)
 		inp = cb.getChoice()
-		if inp == 'messageFrom':
-			messageFrom = input('where from?\n')
-		elif inp == 'message':
-			message = input('new message:\n')
-		elif inp == ChoiceBox.confirmId or inp == ChoiceBox.cancelId:
+		if inp == '签名':
+			messageFrom = input('输入签名?\n')
+		elif inp == '消息内容':
+			message = input('输入内容:\n')
+		elif inp == ChoiceBox.cancelId:
+			return None
+		elif inp == ChoiceBox.confirmId:
 			break
 
 	ConfigIOer().writeSTDConfig(latestMessageFromId, messageFrom)

@@ -24,15 +24,15 @@ def genSetUser(d:dict={}):
     
     cb = ChoiceBox()
     while True:
-        cb.newChoice('username', desc=username)
-        cb.newChoice('password')
-        cb.newChoice('show password')
+        cb.newChoice('用户名', desc=username)
+        cb.newChoice('重新输入密码')
+        cb.newChoice('显示密码')
         inp = cb.getChoice()
-        if inp == 'username':
-            username = input('input username: ')
-        elif inp == 'password':
-            password = getpass.getpass('input password: ')
-        elif inp == 'show password':
+        if inp == '用户名':
+            username = input('输入用户名: ')
+        elif inp == '重新输入密码':
+            password = getpass.getpass('输入密码(无回显): ')
+        elif inp == '显示密码':
             print(password, end='\r')
             time.sleep(1.0)
             for i in range(len(password)):

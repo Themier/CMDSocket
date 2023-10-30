@@ -1,7 +1,7 @@
 
 '''
     关键常量
-    此处的量若被改变，可能会严重影响到本地或通信功能。
+    此处的量若被改变，可能会严重影响到通信功能。
 '''
 import re
 
@@ -15,9 +15,6 @@ cmdStreamBuilder = lambda cmdStr : cmdStreamBuildFormat.format(len(cmdStr), cmdS
 
 cmdStreamParseSizeFormat = "^(\d+)\D+"
 cmdStreamParseFormat = "^\d+(.+)"
-
-#cmdStreamBeginFlag = '&CMDSKTBG&'
-#cmdStreamEndFlag = '&CMDSKTED&'
 
 cmd_finish_words = 'cmd_finish'
 
@@ -60,7 +57,7 @@ def ParseCommandStream(cmdStream):
     p = re.compile(cmdStreamParseFormat)
     m = p.match(cmdStream)
     if m != None:
-        return eval(m[1])
+        return cmd_type(eval(m[1]))
     return None
 
 

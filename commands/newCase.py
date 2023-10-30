@@ -22,7 +22,7 @@ defaultCaseId = 'default'
 defaultInputFilePath = ''
 defaultProgramPath = ''
 defaultCaseOutputFolder = ''
-defaultCaseDescription = b'no description'
+defaultCaseDescription = 'no description'
 
 def newCase(cmd, customAddr, link):
     '''
@@ -56,6 +56,10 @@ def newCase(cmd, customAddr, link):
 
     if pathInHome(outputPath):
         PathMaker().make(outputPath)
+
+    repl = '算例 {} 接收完成'.format(caseId)
+    print(repl)
+    link.send(repl.encode('utf-8'))
     return
 
     
@@ -73,25 +77,28 @@ def genNewCase(d:dict={}):
     cmd['description'] = d.get('description', ConfigIOer().getSTDConfig(latestCaseDescriptionId, defaultCaseDescription))
     while True:
         cb = ChoiceBox()
-        cb.newChoice('caseId', desc=cmd['caseId'])
-        cb.newChoice('inputFilePath', desc=cmd['inputFilePath'])
-        cb.newChoice('programPath', desc=cmd['programPath'])
-        cb.newChoice('outputFolder', desc=cmd['outputFolder'])
-        cb.newChoice('description', desc=cmd['description'])
+        cb.newChoice('算例名称', desc=cmd['caseId'])
+        inputFileExist = 'exist' if os.path.isfile(cmd['inputFilePath']) else 'NOT exist'
+        cb.newChoice('算例输入文件', desc='[{}]{}'.format(inputFileExist, cmd['inputFilePath']))
+        programExist = 'exist' if os.path.isfile(cmd['programPath']) else 'NOT exist'
+        cb.newChoice('程序', desc='[{}]{}'.format(programExist, cmd['programPath']))
+        cb.newChoice('输出路径名', desc=cmd['outputFolder'])
+        cb.newChoice('算例描述', desc=cmd['description'])
         inp = cb.getChoice()
-        if inp == 'caseId':
-            cmd['caseId'] = input('new id: ')
-        elif inp == 'inputFilePath':
+        if inp == '算例名称':
+            cmd['caseId'] = input('算例名称: ')
+        elif inp == '算例输入文件':
             filePath = SingleFileChoicer().getChoice(cmd['inputFilePath'])
             cmd['inputFilePath'] = filePath
-        elif inp == 'programPath':
+        elif inp == '程序':
             filePath = SingleFileChoicer().getChoice(cmd['programPath'])
             cmd['programPath'] = filePath
-        elif inp == 'outputFolder':
-            cmd['outputFolder'] = input('output folder name: ')
-        elif inp == 'description':
-            cmd['description'] = input('new description: ')
-            cmd['description'] = cmd['description'].encode('utf-8')
+        elif inp == '输出路径名':
+            cmd['outputFolder'] = input('输出路径名: ')
+        elif inp == '算例描述':
+            cmd['description'] = input('输入算例描述: ')
+        elif inp == ChoiceBox.cancelId:
+            return None
         elif inp == ChoiceBox.confirmId:
             ConfigIOer().writeSTDConfig(latestCaseIdId, cmd['caseId'])
             ConfigIOer().writeSTDConfig(latestInputFilePathId, cmd['inputFilePath'])
@@ -111,7 +118,7 @@ def genNewCase(d:dict={}):
             cmd['programName'] = os.path.basename(cmd['programPath'])
             cmd['programSize'] = len(cmd['programContent'])
             cmd['inputFileSize'] = len(cmd['inputFileContent'])
-            cmd['description'] = cmd['description']
+            cmd['description'] = cmd['description'].encode('utf-8')
             return cmd
 
 

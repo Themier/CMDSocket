@@ -76,10 +76,11 @@ def genUploadFile(d:dict={})->dict:
 
     while True:
         cb = ChoiceBox()
-        cb.newChoice('filePath', desc=filePath)
+        #file
+        cb.newChoice('文件路径', desc=filePath)
         inp = cb.getChoice()
-        if inp == 'filePath':
-            filePath = SingleFileChoicer.getChoice(filePath)
+        if inp == '文件路径':
+            filePath = SingleFileChoicer().getChoice(filePath)
         elif inp == ChoiceBox.confirmId:
             ConfigIOer.writeSTDConfig(latestPathId, filePath)
             fileName = os.path.basename(filePath)

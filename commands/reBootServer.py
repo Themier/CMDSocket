@@ -5,6 +5,7 @@
 import os, sys, time, socket
 import constants
 from commands import CommandBase
+from tools import ChoiceBox
 
 reBootServer_id = 'reBootServer'
 reBootServer_abbr = ['rbs']
@@ -28,6 +29,13 @@ def reBootServer(cmd, customAddr, link:socket.socket):
 def genReBootServer(d:dict={})->dict:
 	cmd={}
 	cmd['cmdId'] = reBootServer_id
+	while True:
+		inp = ChoiceBox().getChoice('重启目标服务器?')
+		if inp == ChoiceBox.cancelId:
+			return None
+		elif inp == ChoiceBox.confirmId:
+			break
+
 
 	return cmd
 

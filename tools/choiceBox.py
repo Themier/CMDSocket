@@ -16,10 +16,10 @@ class ChoiceBox(dict):
 	}
 	'''
 
-	confirmId = 'confirm'
+	confirmId = '确认'
 	confirmShortCut = ''
 	confirmDesc = ''
-	cancelId = 'cancel'
+	cancelId = '取消'
 	cancelShortCut = 'cc'
 	cancelDesc = ''
 

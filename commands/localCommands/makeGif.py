@@ -56,24 +56,24 @@ def genMakeGif(d:dict={}):
     gif_name = d.get('gif_path', makeGif_defaultGifPath)
     frame_duration = d.get('frame_duration', makeGif_latestFrameDuration)
     while True:
-        print('source path: {}\nnums: {}\nbegin_at: {}\ninters: {}\nprefixes: {}\nsuffixes: {}\ngif_name: {}\nframe_duration: {}'
+        print('资源路径: {}\n资源数量: {}\n帧序起始: {}\n帧间距: {}\n资源名前缀: {}\n资源名后缀: {}\ngif命名: {}\n单帧时长: {}'
               .format(source_paths, nums, begin_at, inters, prefixes, suffixes, gif_name, frame_duration))
         cb = ChoiceBox()
-        cb.newChoice('add source')
-        cb.newChoice('rename gif')
-        cb.newChoice('change frame duration')
-        inp = cb.getChoice('make gif ?')
-        if inp == 'add source':
-            source_paths.append(input('new source path: '))
-            nums.append(int(input('frame num: ')))
-            begin_at.append(int(input('frame begin at: ')))
-            inters.append(int(input('frame index inters: ')))
-            prefixes.append(input('prefix: '))
-            suffixes.append(input('suffix: '))
-        elif inp == 'rename gif':
-            gif_name = input('new name: ')
-        elif inp == 'change frame duration':
-            frame_duration = input('new frame duration: ')
+        cb.newChoice('添加资源路径')
+        cb.newChoice('重命名 gif')
+        cb.newChoice('改变单帧时长')
+        inp = cb.getChoice('合成 gif ?')
+        if inp == '添加资源路径':
+            source_paths.append(input('资源路径: '))
+            nums.append(int(input('资源数量: ')))
+            begin_at.append(int(input('帧序起始: ')))
+            inters.append(int(input('帧间距: ')))
+            prefixes.append(input('资源名前缀: '))
+            suffixes.append(input('资源名后缀: '))
+        elif inp == '重命名 gif':
+            gif_name = input('重命名: ')
+        elif inp == '改变单帧时长':
+            frame_duration = input('单帧时长: ')
         elif inp == ChoiceBox.confirmId:
             cmd = {}
             cmd.update({'cmdId': makeGif_id, 'source_paths':source_paths, 'nums':nums \

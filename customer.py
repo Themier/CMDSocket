@@ -52,12 +52,16 @@ def main():
             if not isinstance(cmd, constants.cmd_type):
                 raise Exception('指令未生成')
             elif inp[0] == '*':
+                print('在本地执行指令')
                 CommandBase.inses[inp].Action(cmd, None, None)
             else:
+                targetIP = ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId)
+                targetPort = int(ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId))
+                print('上传指令到服务器 {}:{}'.format(targetIP, targetPort))
                 customer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 customer.connect((\
-                    ConfigIOer().getSTDConfig(constants.latestLinkIPConfigId), \
-                    int(ConfigIOer().getSTDConfig(constants.latestLinkPortConfigId))\
+                    targetIP, \
+                    targetPort\
                     ))
                 cmd.update({\
                     'username': ConfigIOer().getSTDConfig(constants.latestUsernameConfigId)\
@@ -73,7 +77,7 @@ def main():
                         break
 
         except Exception as error:
-            print('发生错误: \n{}'.format(error))
+            print(error)
 
 
 if __name__ == '__main__':

@@ -18,6 +18,8 @@ class SingleFileChoicer():
 	def getChoice(self, path:str='')->str:
 		if os.path.exists(path):
 			path = os.path.abspath(path)
+		if os.path.isfile(path):
+			path = os.path.dirname(path)
 		drivers = DriverGeter().GetAll()
 		while True:
 			if os.path.isfile(path):
@@ -30,10 +32,10 @@ class SingleFileChoicer():
 
 			elif os.path.isdir(path):
 				cb = ChoiceBox()
-				cb.newChoice('..', '')
+				cb.newChoice('..')
 				allItems = os.listdir(path)
 				for item in allItems:
-					cb.newChoice(item, '')
+					cb.newChoice(item)
 				c = cb.getChoice('{}'.format(path), addConfirm=False, addCancel=False)
 				if c == '..':
 					if path in drivers:

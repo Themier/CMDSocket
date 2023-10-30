@@ -4,6 +4,7 @@ import re
 import constants
 from commands import CommandBase
 from tools import PathMaker
+from tools import ChoiceBox
 import time
 import shutil
 
@@ -61,6 +62,12 @@ def __getFolderItems(prjMap, root, now='./'):
 def genUploadProject(d:dict={})->dict:
     '''
     '''
+    while True:
+        inp = ChoiceBox().getChoice('将本地项目更新到服务器?')
+        if inp == ChoiceBox.cancelId:
+            return None
+        elif inp == ChoiceBox.confirmId:
+            break
     cmd = {'cmdId':uploadPrj_id}
     prjMap = {}
     __getFolderItems(prjMap, constants.prjPath)

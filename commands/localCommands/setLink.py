@@ -25,12 +25,12 @@ def genSetLink(d:dict={}):
     cb = ChoiceBox()
     while True:
         cb.newChoice('ip', desc=ip)
-        cb.newChoice('port', desc=port)
+        cb.newChoice('端口', desc=port)
         inp = cb.getChoice()
         if inp == 'ip':
-            ip = input('input ip: ')
-        elif inp == 'port':
-            port = input('input port: ')
+            ip = input('输入目标 ip: ')
+        elif inp == '端口':
+            port = input('输入目标端口: ')
         elif inp == ChoiceBox.confirmId:
             break
         elif inp == ChoiceBox.cancelId:
