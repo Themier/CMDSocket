@@ -1,7 +1,7 @@
 
 import os
 import constants
-from ..coreCommands import CommandBase, uploadFile
+from ..coreCommands import CommandBase, uploadFile_id
 from tools import ChoiceBox
 from tools import PathMaker
 from tools import SingleFileChoicer
@@ -42,17 +42,17 @@ def newCase(cmd, customAddr, link):
     newFileCMD['fileName'] = cmd.get('inputFileName')
     newFileCMD['fileSize'] = cmd.get('inputFileSize')
     newFileCMD['fileContent'] = cmd.get('inputFileContent')
-    uploadFile(newFileCMD, customAddr, link)
+    CommandBase.inses[uploadFile_id].Action(newFileCMD, customAddr, link)
     
     newFileCMD['fileName'] = caseDescFileName
     newFileCMD['fileSize'] = len(caseDesc)
     newFileCMD['fileContent'] = caseDesc
-    uploadFile(newFileCMD, customAddr, link)
+    CommandBase.inses[uploadFile_id].Action(newFileCMD, customAddr, link)
 
     newFileCMD['fileName'] = cmd.get('programName')
     newFileCMD['fileSize'] = cmd.get('programSize')
     newFileCMD['fileContent'] = cmd.get('programContent')
-    uploadFile(newFileCMD, customAddr, link)
+    CommandBase.inses[uploadFile_id].Action(newFileCMD, customAddr, link)
 
     if PathIncludeChecker.IsInclude(constants.homePath, outputPath):
         PathMaker().make(outputPath)

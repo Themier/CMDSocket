@@ -51,19 +51,15 @@ class ServerTutelage():
             print('\n等待指令中 ...\n')
 
             link, customAddr = self.server.accept()
-            print('来自 {} 的访问, 等待指令...'.format(customAddr))
+            print('来自 {} 的访问, 接收指令...'.format(customAddr))
 
             try:
                 cmdStream=''
-                latestRecvSize = 0
-                #lenBeginFlag = len(constants.cmdStreamBeginFlag)
-                #lenEndFlag = len(constants.cmdStreamEndFlag)
                 cumulantEmptyRecvTimes = 0
                 cmdSize = None
                 while cmdSize == None:
                     recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
-                    latestRecvSize = len(recvStream)
-                    if latestRecvSize == 0:
+                    if len(recvStream) == 0:
                         cumulantEmptyRecvTimes += 1
                         if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
                             raise Exception('网络传输异常')
@@ -80,20 +76,6 @@ class ServerTutelage():
                             raise Exception('网络传输异常或命令流终止符错误')
                         continue
                     cmdStream += recvStream
-
-                #checkEnd = False
-                #indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
-                #if indexEndFlag >= 0:
-                #    checkEnd = True
-                #cumulantEmptyRecvTimes = 0
-                #while not checkEnd:
-                #    cmdStream += recvStream
-                #    indexEndFlag = cmdStream.find(constants.cmdStreamEndFlag)
-                #    if indexEndFlag >= 0:
-                #        checkEnd = True
-
-                #cmdStream = cmdStream[lenBeginFlag:indexEndFlag]
-                #smdSize = len(cmdStream)
 
                 try:
                     cmd = constants.ParseCommandStream(cmdStream)

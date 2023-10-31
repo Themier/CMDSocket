@@ -55,6 +55,8 @@ class ConfigIOer():
             configFile = open(path, 'r')
             configs.update(eval(configFile.read()))
             configFile.close()
+        if configs[id] == value:
+            return True
         configs[id] = value
         configFile = open(path, 'w')
         configFile.write(repr(configs))

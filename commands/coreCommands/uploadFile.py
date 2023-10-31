@@ -16,16 +16,25 @@ defaultFilePath = ''
 
 def uploadFile(cmd, customAddr, link)->int:
     '''
+    cmd:
+        fileFolder: str 文件保存到该路径下
+        fileName: str 文件名
+        fileSize: str 原文件大小，用于判断文件传输是否完整
+        fileContent: bytes 文件内容
+        overLoad: bool 是否覆盖同名文件，如果为否，自动重命名
     '''
-    fileFolder = cmd.get('fileFolder','recvFiles')
-    fileName = cmd.get('fileName','unamed')
-    fileSize = cmd.get('fileSize', 0)
+    fileFolder = cmd.get('fileFolder')
+    fileName = cmd.get('fileName')
+    fileSize = cmd.get('fileSize')
     recvFileSize = len(cmd['fileContent'])
     overLoad = cmd.get('overLoad', False)
     if fileSize != 0:
         completePercent = recvFileSize * 100.0 / fileSize
     else:
-        completePercent = 100.0
+        reply='文件传输失败：文件大小为 0'
+        print(reply)
+        link.send(reply.encode('utf-8'))
+        return
     complete = (fileSize == recvFileSize)
     
     if not (\
@@ -36,9 +45,8 @@ def uploadFile(cmd, customAddr, link)->int:
         print(reply)
         link.send(reply.encode('utf-8'))
         return
-    
     filePath = os.path.abspath(os.path.join(fileFolder, fileName))
-    fileFolder = os.path.abspath(os.path.join(filePath, os.pardir))
+    fileFolder = os.path.dirname(filePath)
     PathMaker().make(fileFolder)
 
     if not overLoad:
@@ -50,7 +58,7 @@ def uploadFile(cmd, customAddr, link)->int:
     file.write(cmd['fileContent'])
     file.close()
 
-    reply = '文件 {} 接收完成，完整度 {} / {} : {}%'.format(fileName, recvFileSize, fileSize, completePercent)
+    reply = '文件 {} 接收完成，完整度 {} / {} : {}%\n'.format(fileName, recvFileSize, fileSize, completePercent)
     print(reply)
     link.send(reply.encode('utf-8'))
 
@@ -59,9 +67,9 @@ def uploadFile(cmd, customAddr, link)->int:
 
 def genUploadFile(d:dict={})->dict:
     '''
-    d:
-        fileFolder: str 上传到服务器的哪个文件
-        filePath: str 本地文件路径, 在不指定 fileNameAndContent 时生效
+    cmd:
+        fileFolder: str 文件上传到服务器Home的该路径下
+        filePath: str 本地文件所在的路径
         overLoad: bool 是否覆盖同名文件，如果为否，自动重命名
     '''
     global uploadFile_id, latestPathId, defaultFilePath
