@@ -38,7 +38,7 @@ class SingleFileChoicer():
 					cb.newChoice(item)
 				c = cb.getChoice('{}'.format(path), addConfirm=False, addCancel=False)
 				if c == '..':
-					if path in drivers:
+					if os.path.abspath(path) in drivers:
 						path = ''
 					else:
 						path = os.path.dirname(path)
