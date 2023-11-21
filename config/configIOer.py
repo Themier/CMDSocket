@@ -38,7 +38,7 @@ class ConfigIOer():
             configs.update(eval(configFile.read()))
             configFile.close()
             if id in configs:
-                return configs[id]
+                return configs.get(id, None)
 
         return defaultValue
 
@@ -55,7 +55,7 @@ class ConfigIOer():
             configFile = open(path, 'r')
             configs.update(eval(configFile.read()))
             configFile.close()
-        if configs[id] == value:
+        if configs.get(id, None) == value:
             return True
         configs[id] = value
         configFile = open(path, 'w')
