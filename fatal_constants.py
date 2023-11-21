@@ -39,6 +39,17 @@ def ParseCommandStreamSize(cmdStreamHead):
     return None
 
 
+def CountCommandStreamRealSize(cmdStream)->bool:
+    '''
+        根据命令流及已知的命令长度分析命令流是否完整
+    '''
+    p = re.compile(cmdStreamParseFormat)
+    m = p.match(cmdStream)
+    if m==None:
+        return 0
+    return len(m[1])
+
+
 def CheckCommandStream(cmdStream, size)->bool:
     '''
         根据命令流及已知的命令长度分析命令流是否完整

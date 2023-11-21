@@ -54,31 +54,47 @@ class ServerTutelage():
             print('来自 {} 的访问, 接收指令...'.format(customAddr))
 
             try:
-                cmdStream=''
+                cmdBufferFile = open('cmdBuffer', 'w')
                 cumulantEmptyRecvTimes = 0
                 cmdSize = None
+                #cmdStream=''
                 while cmdSize == None:
                     recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
                     if len(recvStream) == 0:
                         cumulantEmptyRecvTimes += 1
                         if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
-                            raise Exception('网络传输异常')
+                            raise Exception('网络传输异常或命令格式错误')
                         continue
-                    cmdStream += recvStream
-                    cmdSize = constants.ParseCommandStreamSize(cmdStream)
-                print('收到指令, 长度 {}'.format(cmdSize))
+                    #cmdStream += recvStream
+                    cmdBufferFile.write(recvStream)
+                    cmdBufferFile.flush()
+                    cmdBufferFileRead = open('cmdBuffer', 'r')
+                    cmdSize = constants.ParseCommandStreamSize(cmdBufferFileRead.read())
+                    cmdBufferFileRead.close()
+                print('收到指令, 长度 {}\n正在接收 ......'.format(cmdSize))
+                cmdBufferFileRead = open('cmdBuffer', 'r')
+                nowSize = constants.CountCommandStreamRealSize(cmdBufferFileRead.read())
+                cmdBufferFileRead.close()
 
-                while not constants.CheckCommandStream(cmdStream, cmdSize):
+                while nowSize < cmdSize:
                     recvStream = link.recv(constants.maxSizePerRecv).decode('utf-8')
                     if len(recvStream) == 0:
                         cumulantEmptyRecvTimes += 1
                         if cumulantEmptyRecvTimes > constants.maxTryRecvTimes:
                             raise Exception('网络传输异常或命令流终止符错误')
                         continue
-                    cmdStream += recvStream
+                    #cmdStream += recvStream
+                    nowSize += len(recvStream)
+                    cmdBufferFile.write(recvStream)
+                    #nowLen = constants.CountCommandStreamRealSize(cmdStream)
+                    print('接收进度 {:03.3f} %'.format(100.0*nowSize/cmdSize), end='\r')
 
                 try:
-                    cmd = constants.ParseCommandStream(cmdStream)
+                    cmdBufferFile.flush()
+                    cmdBufferFileRead = open('cmdBuffer', 'r')
+                    cmd = constants.ParseCommandStream(cmdBufferFileRead.read())
+                    cmdBufferFileRead.close()
+                    cmdBufferFile.close()
                 except Exception as error:
                     raise Exception("命令流解析失败，{}".format(error))
 

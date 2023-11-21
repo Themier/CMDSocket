@@ -30,6 +30,9 @@ def uploadFile(cmd, customAddr, link)->int:
     overLoad = cmd.get('overLoad', False)
     if fileSize != 0:
         completePercent = recvFileSize * 100.0 / fileSize
+        reply='正在保存文件 ......'
+        print(reply)
+        link.send(reply.encode('utf-8'))
     else:
         reply='文件传输失败：文件大小为 0'
         print(reply)

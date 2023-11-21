@@ -10,7 +10,7 @@ maxPort = 20000
 
 maxConnection = 3
 
-maxSizePerRecv = 10*1024
+maxSizePerRecv = 10*1024*1024
 
 maxTryRecvTimes = 500
 
@@ -18,6 +18,7 @@ configFolder = r'configs'
 configFileSuffix = '.cfg'
 athorFileName = 'athor'
 stdConfigFileName = 'config'
+cmdBufferConfigFileName = 'cmdBuffer'
 
 latestLinkIPConfigId = 'localArg_latestLinkIP'
 latestLinkPortConfigId = 'localArg_latestLinkPort'
